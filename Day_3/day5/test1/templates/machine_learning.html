@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Machine Learning — Definition & Types</title>
+  <meta name="description" content="A concise, student‑friendly single‑page explaining Machine Learning: definition, workflow, and major types with examples." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b1020;           /* deep indigo */
+      --panel:#111830;        /* card */
+      --ink:#e7ecff;          /* text */
+      --muted:#a7b0d7;        /* secondary text */
+      --accent:#7c9cff;       /* blue */
+      --accent-2:#7fffd4;     /* aqua */
+      --ring: 0 0 0 3px rgba(124,156,255,.25);
+      --radius: 16px;
+      --shadow: 0 10px 35px rgba(0,0,0,.35);
+      --code:#0d1328;         /* code bg */
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Segoe UI Emoji,Apple Color Emoji,sans-serif;
+      color:var(--ink); background:radial-gradient(1200px 800px at 20% -10%, rgba(124,156,255,.15), transparent 60%),
+                       radial-gradient(900px 600px at 110% 10%, rgba(127,255,212,.12), transparent 60%),
+                       var(--bg);
+      line-height:1.6; letter-spacing:.2px;
+    }
+    header{
+      position:sticky; top:0; z-index:50; backdrop-filter:saturate(140%) blur(10px);
+      background:linear-gradient(to bottom, rgba(11,16,32,.85), rgba(11,16,32,.55));
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    .wrap{max-width:1100px; margin:0 auto; padding:18px 20px}
+    .brand{display:flex; gap:12px; align-items:center}
+    .logo{width:34px; height:34px; display:grid; place-items:center; border-radius:10px; background:linear-gradient(135deg, var(--accent), var(--accent-2)); box-shadow:var(--shadow)}
+    nav{display:flex; gap:14px; flex-wrap:wrap}
+    .row{display:flex; gap:22px; align-items:center; justify-content:space-between}
+    a, .link{color:var(--ink); text-decoration:none}
+    .chip{color:var(--muted); font-size:14px; padding:6px 10px; border:1px solid rgba(255,255,255,.08); border-radius:999px; transition:.2s;}
+    .chip:hover{border-color:rgba(255,255,255,.22); color:#fff}
+    main{padding:28px 20px 70px}
+    h1{font-size:clamp(28px, 3.5vw, 44px); line-height:1.1; margin:18px 0}
+    h2{font-size:clamp(22px, 2.4vw, 30px); margin:34px 0 14px}
+    h3{font-size:clamp(18px, 2vw, 22px); margin:20px 0 8px}
+    p.lead{color:#fff; max-width:70ch}
+    .grid{display:grid; gap:18px}
+    .cols-3{grid-template-columns:repeat(auto-fit, minmax(260px, 1fr))}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+          border:1px solid rgba(255,255,255,.06); border-radius:var(--radius); padding:18px 18px 16px; box-shadow:var(--shadow)}
+    .muted{color:var(--muted)}
+    code, pre{font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace}
+    pre{background:var(--code); padding:14px; border-radius:12px; overflow:auto; border:1px solid rgba(255,255,255,.06)}
+    .toc{display:flex; flex-wrap:wrap; gap:10px; margin-top:12px}
+    .toc a{padding:8px 12px; border-radius:10px; border:1px solid rgba(255,255,255,.08); color:var(--muted)}
+    .toc a:hover{color:#fff; border-color:rgba(255,255,255,.22)}
+    .badge{display:inline-flex; align-items:center; gap:8px; font-size:12px; padding:4px 10px; border-radius:999px; border:1px solid rgba(255,255,255,.12); color:var(--muted)}
+    .pill{display:inline-block; font-size:12px; color:var(--muted); border:1px solid rgba(255,255,255,.08); padding:4px 8px; border-radius:999px}
+    .kpi{display:flex; gap:16px; flex-wrap:wrap}
+    .kpi .card{display:flex; flex-direction:column; gap:6px}
+    .callout{border-left:4px solid var(--accent); padding:14px 16px; background:rgba(124,156,255,.08); border-radius:12px}
+    footer{margin-top:60px; color:var(--muted)}
+    .btn{appearance:none; border:1px solid rgba(255,255,255,.12); background:transparent; color:#fff; padding:10px 14px; border-radius:12px; cursor:pointer}
+    .btn:focus{outline:none; box-shadow:var(--ring)}
+    .accordion{margin-top:10px}
+    .accordion details{border:1px solid rgba(255,255,255,.06); border-radius:12px; padding:10px 14px; background:rgba(255,255,255,.03)}
+    .accordion details+details{margin-top:10px}
+    .accordion summary{cursor:pointer}
+    .small{font-size:13.5px}
+    .hr{height:1px; background:linear-gradient(90deg, rgba(255,255,255,.08), rgba(255,255,255,.02)); margin:28px 0}
+    @media print{ header, .toc, .btn {display:none} body{background:white; color:#111} .card{box-shadow:none; border-color:#ddd} }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap row">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">🤖</div>
+        <div>
+          <strong>Machine Learning</strong><br>
+          <span class="muted small">Definition • Types • Examples</span>
+        </div>
+      </div>
+      <nav>
+        <a class="chip" href="#definition">Definition</a>
+        <a class="chip" href="#workflow">Workflow</a>
+        <a class="chip" href="#types">Types</a>
+        <a class="chip" href="#use-cases">Use‑cases</a>
+        <a class="chip" href="#faq">FAQ</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section id="definition">
+      <h1>What is <span style="color:var(--accent)">Machine Learning</span>?</h1>
+      <p class="lead">Machine Learning (ML) is a branch of Artificial Intelligence that enables computer systems to learn patterns from data and make predictions or decisions <em>without being explicitly programmed for every rule</em>.</p>
+      <div class="grid cols-3">
+        <article class="card">
+          <h3>Key idea</h3>
+          <p>Instead of hard‑coding rules, we train a model on examples so it can generalize to new, unseen inputs.</p>
+          <span class="pill">Data → Model → Prediction</span>
+        </article>
+        <article class="card">
+          <h3>Goal</h3>
+          <p>Minimize error on future data by learning parameters from past data. This is measured using a <strong>loss function</strong>.</p>
+          <span class="pill">Generalization</span>
+        </article>
+        <article class="card">
+          <h3>Ingredients</h3>
+          <p>Data, features/representations, a learning algorithm, an objective (loss), and evaluation metrics.</p>
+          <span class="pill">Accuracy • F1 • RMSE</span>
+        </article>
+      </div>
+      <div class="callout" style="margin-top:16px">
+        <strong>Simple definition:</strong> ML finds relationships in data and uses them to make useful predictions or decisions automatically.
+      </div>
+      <div class="toc" aria-label="On this page">
+        <a href="#supervised">Supervised</a>
+        <a href="#unsupervised">Unsupervised</a>
+        <a href="#semi">Semi‑supervised</a>
+        <a href="#self">Self‑supervised</a>
+        <a href="#reinforcement">Reinforcement</a>
+      </div>
+    </section>
+
+    <section id="workflow">
+      <h2>Typical ML Workflow</h2>
+      <div class="grid cols-3">
+        <div class="card"><h3>1) Define the problem</h3><p class="muted">What is the task? (e.g., predict price, classify email as spam/not‑spam)</p></div>
+        <div class="card"><h3>2) Collect & prepare data</h3><p class="muted">Gather, clean, split data (train/validation/test). Engineer features if needed.</p></div>
+        <div class="card"><h3>3) Choose a model</h3><p class="muted">Select algorithms suitable for the task and data size/quality.</p></div>
+        <div class="card"><h3>4) Train</h3><p class="muted">Fit the model on training data by minimizing loss (e.g., gradient descent).</p></div>
+        <div class="card"><h3>5) Evaluate</h3><p class="muted">Assess with appropriate metrics; diagnose overfitting/underfitting.</p></div>
+        <div class="card"><h3>6) Deploy & monitor</h3><p class="muted">Serve the model and track performance drift over time.</p></div>
+      </div>
+      <div class="kpi" style="margin-top:8px">
+        <div class="card" style="flex:1"><span class="badge">🔁 Overfitting</span><span class="muted small">Great on training, poor on test → model memorized noise. Fix with regularization, more data, or simpler model.</span></div>
+        <div class="card" style="flex:1"><span class="badge">⚖️ Bias–Variance</span><span class="muted small">Balance simplicity vs. flexibility to generalize well.</span></div>
+      </div>
+    </section>
+
+    <div class="hr" role="separator" aria-hidden="true"></div>
+
+    <section id="types">
+      <h2>Types of Machine Learning</h2>
+
+      <article id="supervised" class="card">
+        <h3>1) Supervised Learning</h3>
+        <p class="muted">Learn from <strong>labeled</strong> data (input → known target). Used for prediction and classification.</p>
+        <div class="grid cols-3">
+          <div>
+            <h4>Tasks</h4>
+            <ul>
+              <li><strong>Regression</strong>: predict continuous values (e.g., house price)</li>
+              <li><strong>Classification</strong>: predict categories (e.g., spam vs. not spam)</li>
+            </ul>
+          </div>
+          <div>
+            <h4>Common algorithms</h4>
+            <ul>
+              <li>Linear/Logistic Regression</li>
+              <li>Decision Trees & Random Forests</li>
+              <li>Support Vector Machines (SVM)</li>
+              <li>k‑Nearest Neighbors (kNN)</li>
+              <li>Neural Networks</li>
+            </ul>
+          </div>
+          <div>
+            <h4>Examples</h4>
+            <ul>
+              <li>Credit risk scoring</li>
+              <li>Image recognition (cats/dogs)</li>
+              <li>Demand forecasting</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <article id="unsupervised" class="card">
+        <h3>2) Unsupervised Learning</h3>
+        <p class="muted">Learn patterns from <strong>unlabeled</strong> data. There is no target variable to predict.</p>
+        <div class="grid cols-3">
+          <div>
+            <h4>Tasks</h4>
+            <ul>
+              <li><strong>Clustering</strong> (k‑means, DBSCAN, hierarchical)</li>
+              <li><strong>Dimensionality Reduction</strong> (PCA, t‑SNE, UMAP)</li>
+              <li><strong>Association Mining</strong> (market baskets)</li>
+            </ul>
+          </div>
+          <div>
+            <h4>Use cases</h4>
+            <ul>
+              <li>Customer segmentation</li>
+              <li>Anomaly detection</li>
+              <li>Feature extraction/visualization</li>
+            </ul>
+          </div>
+          <div>
+            <h4>Notes</h4>
+            <ul>
+              <li>No single “accuracy” — evaluate by cohesion/separation or downstream utility.</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <article id="semi" class="card">
+        <h3>3) Semi‑supervised Learning</h3>
+        <p class="muted">Combine a small set of labeled data with a large pool of unlabeled data to improve performance.</p>
+        <div class="grid cols-3">
+          <div>
+            <h4>When to use</h4>
+            <ul>
+              <li>Labeling is expensive (e.g., medical images)</li>
+              <li>Plenty of raw data available</li>
+            </ul>
+          </div>
+          <div>
+            <h4>Techniques</h4>
+            <ul>
+              <li>Label propagation / self‑training</li>
+              <li>Consistency regularization</li>
+              <li>Pseudo‑labeling</li>
+            </ul>
+          </div>
+          <div>
+            <h4>Benefit</h4>
+            <ul>
+              <li>Approaches supervised accuracy with fewer labels</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <article id="self" class="card">
+        <h3>4) Self‑supervised Learning</h3>
+        <p class="muted">Learn representations by creating supervision from the data itself (e.g., masking parts of input and predicting them).</p>
+        <div class="grid cols-3">
+          <div>
+            <h4>Examples</h4>
+            <ul>
+              <li>Masked language modeling (text)</li>
+              <li>Contrastive learning (images/audio)</li>
+              <li>Autoencoders</li>
+            </ul>
+          </div>
+          <div>
+            <h4>Why it matters</h4>
+            <ul>
+              <li>Pretraining on large unlabeled datasets</li>
+              <li>Improves downstream tasks with few labels</li>
+            </ul>
+          </div>
+          <div>
+            <h4>Outcome</h4>
+            <ul>
+              <li>Rich embeddings/features for transfer learning</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <article id="reinforcement" class="card">
+        <h3>5) Reinforcement Learning (RL)</h3>
+        <p class="muted">An <strong>agent</strong> learns to act in an <strong>environment</strong> by taking actions to maximize cumulative <strong>reward</strong>.</p>
+        <div class="grid cols-3">
+          <div>
+            <h4>Core concepts</h4>
+            <ul>
+              <li>State, action, reward, policy, value</li>
+              <li>Exploration vs. exploitation</li>
+            </ul>
+          </div>
+          <div>
+            <h4>Algorithms</h4>
+            <ul>
+              <li>Q‑learning, SARSA</li>
+              <li>Deep Q‑Networks (DQN)</li>
+              <li>Policy Gradient, PPO</li>
+            </ul>
+          </div>
+          <div>
+            <h4>Applications</h4>
+            <ul>
+              <li>Game playing (e.g., Go, Atari)</li>
+              <li>Robotics & control</li>
+              <li>Recommendation strategies</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <div class="accordion">
+        <details>
+          <summary><strong>Deep Learning</strong> in one minute</summary>
+          <p class="small muted">Deep Learning is a subset of ML using multi‑layer neural networks that learn hierarchical representations. It shines with large datasets and unstructured data (images, audio, text).</p>
+        </details>
+        <details>
+          <summary>Choosing the right type</summary>
+          <p class="small muted">If you have labels → start with supervised. If not → try unsupervised to explore. Few labels but lots of data → semi/self‑supervised. Sequential decision problems → RL.</p>
+        </details>
+      </div>
+    </section>
+
+    <section id="use-cases">
+      <h2>Common Use‑cases</h2>
+      <div class="grid cols-3">
+        <div class="card"><h3>Vision</h3><p class="muted">Object detection, medical imaging, quality inspection.</p></div>
+        <div class="card"><h3>Language</h3><p class="muted">Spam filters, translation, chatbots, summarization.</p></div>
+        <div class="card"><h3>Forecasting</h3><p class="muted">Sales, energy demand, traffic, weather proxies.</p></div>
+        <div class="card"><h3>Security</h3><p class="muted">Anomaly detection, fraud prevention, intrusion alerts.</p></div>
+        <div class="card"><h3>Personalization</h3><p class="muted">Recommendations, dynamic pricing, targeting.</p></div>
+        <div class="card"><h3>Operations</h3><p class="muted">Predictive maintenance, capacity planning, routing.</p></div>
+      </div>
+    </section>
+
+    <section id="faq">
+      <h2>Quick FAQ</h2>
+      <div class="accordion">
+        <details open>
+          <summary>What is the difference between AI, ML, and DL?</summary>
+          <p class="small muted"><strong>AI</strong> is the broad goal of making machines smart. <strong>ML</strong> is a subset focused on learning from data. <strong>Deep Learning</strong> (DL) is a subset of ML using deep neural networks.</p>
+        </details>
+        <details>
+          <summary>How do we measure success?</summary>
+          <p class="small muted">Use appropriate metrics: Accuracy/F1 for classification, MAE/RMSE/R² for regression, reward for RL. Always validate on data not used for training.</p>
+        </details>
+        <details>
+          <summary>What are common pitfalls?</summary>
+          <p class="small muted">Data leakage, overfitting, biased data, poor evaluation splits, and deploying without monitoring for drift.</p>
+        </details>
+      </div>
+    </section>
+
+    <footer>
+      <p class="small">© 2025 • Machine Learning Notes. Free to use for study/teaching. Print‑friendly.</p>
+    </footer>
+  </main>
+
+  <script>
+    // Smooth scroll for internal links
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', e=>{
+        const id = a.getAttribute('href').slice(1);
+        const el = document.getElementById(id);
+        if(el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth', block:'start'}); }
+      });
+    });
+  </script>
+</body>
+</html>
