@@ -1,5 +1,5 @@
 """
-URL configuration for day5 project.
+URL configuration for exercise4 project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.0/topics/http/urls/
@@ -16,12 +16,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from test1 import views
-from test2 import views as v2
+from student import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('home', views.home),
-    path('machine learning', views.ml),
-    path('test', v2.testpaper)
+    path('student', views.student)
 ]
