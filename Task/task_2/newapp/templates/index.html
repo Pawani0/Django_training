@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: #f5f5f5;
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 32px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333366;
+            text-align: center;
+        }
+        .product {
+            border-bottom: 1px solid #eee;
+            padding: 16px 0;
+        }
+        .product:last-child {
+            border-bottom: none;
+        }
+        h3 {
+            margin: 6px 0;
+            color: #222;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Products</h1>
+        <br>
+        {% for product in products %}
+        <div class="product">
+            <h3>Product name : {{product.name}}</h3>
+            <h3>MRP : {{product.price}}</h3>
+            <h3>Discount : {{product.discount}}%</h3>
+            <h3>Discounted price : {{product.discounted_price}}</h3>
+        </div>
+        {% endfor %}
+    </div>
