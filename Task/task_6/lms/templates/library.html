@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #2d3748;
+            overflow-x: hidden;
+        }
+
+        /* Animated background particles */
+        .bg-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        /* Header with glassmorphism */
+        header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 24px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            margin-right: 16px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff, #f7fafc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Container and layout */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+        }
+
+        /* Card styling with glassmorphism and hover effects */
+        .card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 32px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .card:hover::before {
+            left: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .card h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card h2::before {
+            content: '';
+            width: 4px;
+            height: 30px;
+            background: linear-gradient(135deg, #4fd1c7, #06b6d4);
+            border-radius: 2px;
+            box-shadow: 0 0 10px rgba(79, 209, 199, 0.5);
+        }
+
+        /* Form styling */
+        form {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 16px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            font-size: 16px;
+            color: #ffffff;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #4fd1c7;
+            box-shadow: 0 0 0 3px rgba(79, 209, 199, 0.2);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Button styling */
+        button {
+            grid-column: span 2;
+            padding: 18px 36px;
+            background: linear-gradient(135deg, #4fd1c7, #06b6d4);
+            border: none;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #06b6d4, #4fd1c7);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        button:hover::before {
+            left: 0;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(79, 209, 199, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        /* Search bar special styling */
+        .search-bar {
+            display: flex !important;
+            grid-template-columns: none !important;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .search-bar input {
+            flex: 1;
+            grid-column: auto;
+        }
+
+        .search-bar button {
+            grid-column: auto;
+            padding: 16px 24px;
+            white-space: nowrap;
+        }
+
+        /* Highlight sections */
+        .highlight {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 24px;
+            margin-top: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        .highlight strong {
+            color: #4fd1c7;
+            display: block;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+
+        .highlight br {
+            margin-bottom: 8px;
+        }
+
+        /* Table styling */
+        table {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-top: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        table th {
+            background: rgba(79, 209, 199, 0.3);
+            color: #ffffff;
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        table td {
+            padding: 16px;
+            color: #ffffff;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        table tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                padding: 20px 16px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .logo {
+                font-size: 2rem;
+            }
+
+            form {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group {
+                grid-column: span 1;
+            }
+
+            button {
+                grid-column: span 1;
+            }
+
+            .search-bar {
+                flex-direction: column;
+            }
+
+            .search-bar button {
+                width: 100%;
+            }
+        }
+
+        /* Loading animation for buttons */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading::after {
+            content: '';
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top: 2px solid #ffffff;
+            border-radius: 50%;
+            display: inline-block;
+            animation: spin 1s linear infinite;
+            margin-left: 8px;
+        }
+
+        /* Success message styling */
+        .success-message {
+            background: rgba(72, 187, 120, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(72, 187, 120, 0.3);
+            color: #ffffff;
+            padding: 16px 24px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Icon styles */
+        .icon {
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated background particles -->
+    <div class="bg-particles" id="particles"></div>
+
+    <header>
+        <div class="header-content">
+            <div class="logo">📚</div>
+            <h1>Library Management System</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Success message placeholder -->
+        <div class="success-message" style="display: none;" id="successMessage">
+            <span class="icon">✅</span>
+            <span>Operation completed successfully!</span>
+        </div>
+
+        <!-- Add Student -->
+        <div class="card">
+            <h2><span class="icon">👨‍🎓</span> Add Student</h2>
+            <form method="POST" action="{% url 'add_student' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input type="text" name="name" placeholder="Student Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" name="email" placeholder="Email Address" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="branch" placeholder="Branch/Department" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="roll_number" placeholder="Roll Number" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="year" placeholder="Academic Year" required>
+                </div>
+                <div class="form-group full-width">
+                    <button type="submit">Add Student</button>
+                </div>
+            </form>
+            
+            <div class="highlight">
+                <strong>👥 Existing Students</strong>
+                {% for student in students %}
+                    <div>{{ student.roll_number }} → {{ student.name }}</div>
+                {% empty %}
+                    <div>No students registered yet.</div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Add Book -->
+        <div class="card">
+            <h2><span class="icon">📖</span> Add Book</h2>
+            <form method="POST" action="{% url 'add_book' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input type="text" name="title" placeholder="Book Title" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="author" placeholder="Author Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="isbn" placeholder="ISBN Number" required>
+                </div>
+                <div class="form-group">
+                    <input type="number" name="total_copies" placeholder="Total Copies" min="1" required>
+                </div>
+                <div class="form-group full-width">
+                    <button type="submit">Add Book</button>
+                </div>
+            </form>
+            
+            <div class="highlight">
+                <strong>📚 Available Books</strong>
+                {% for book in books %}
+                    <div>{{ book.id }} → {{ book.title }} by {{ book.author }} ({{ book.available_copies }} available)</div>
+                {% empty %}
+                    <div>No books in library yet.</div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Issue Book -->
+        <div class="card">
+            <h2><span class="icon">📤</span> Issue Book</h2>
+            <form method="POST" action="{% url 'issue_book' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input type="text" name="student_id" placeholder="Student Roll Number" required>
+                </div>
+                <div class="form-group">
+                    <input type="number" name="book_id" placeholder="Book ID" min="1" required>
+                </div>
+                <div class="form-group full-width">
+                    <button type="submit">Issue Book</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Return Book -->
+        <div class="card">
+            <h2><span class="icon">📥</span> Return Book</h2>
+            <form method="POST" action="{% url 'return_book' %}">
+                {% csrf_token %}
+                <div class="form-group full-width">
+                    <input type="number" name="issue_id" placeholder="Issue ID" min="1" required>
+                </div>
+                <div class="form-group full-width">
+                    <button type="submit">Return Book</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Reissue Book -->
+        <div class="card">
+            <h2><span class="icon">🔄</span> Reissue Book</h2>
+            <form method="POST" action="{% url 'reissue_book' %}">
+                {% csrf_token %}
+                <div class="form-group full-width">
+                    <input type="number" name="issue_id" placeholder="Issue ID" min="1" required>
+                </div>
+                <div class="form-group full-width">
+                    <button type="submit">Reissue Book</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Search Book -->
+        <div class="card">
+            <h2><span class="icon">🔍</span> Search Book</h2>
+            <form method="GET" action="{% url 'search_book' %}" class="search-bar">
+                <input type="number" name="book_id" placeholder="Enter Book ID" min="1" required>
+                <button type="submit">Search Book</button>
+            </form>
+
+            {% if search_result %}
+                <div class="highlight">
+                    <strong>📋 Book Details</strong>
+                    <div><strong>ID:</strong> {{ search_result.id }}</div>
+                    <div><strong>Title:</strong> {{ search_result.title }}</div>
+                    <div><strong>Author:</strong> {{ search_result.author }}</div>
+                    <div><strong>ISBN:</strong> {{ search_result.isbn }}</div>
+                    <div><strong>Total Copies:</strong> {{ search_result.quantity }}</div>
+                    
+                    <br>
+                    <strong>📋 Currently Issued To</strong>
+                    {% for issue in issued_students %}
+                        <div><strong>Student:</strong> {{ issue.student.name }} ({{ issue.student.roll_number }})</div>
+                        <div><strong>Issued:</strong> {{ issue.issue_date }} | <strong>Due:</strong> {{ issue.due_date }}</div>
+                        <br>
+                    {% empty %}
+                        <div>✅ Not currently issued to anyone</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        // Create animated background particles
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const size = Math.random() * 6 + 2;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 4 + 6) + 's';
+                
+                container.appendChild(particle);
+            }
+        }
+
+        // Add loading states to buttons
+        function addButtonLoadingStates() {
+            const buttons = document.querySelectorAll('button[type="submit"]');
+            
+            buttons.forEach(button => {
+                button.addEventListener('click', function() {
+                    this.classList.add('loading');
+                    this.disabled = true;
+                    
+                    // Re-enable after 3 seconds (in case form doesn't submit)
+                    setTimeout(() => {
+                        this.classList.remove('loading');
+                        this.disabled = false;
+                    }, 3000);
+                });
+            });
+        }
+
+        // Add input focus effects
+        function addInputEffects() {
+            const inputs = document.querySelectorAll('input, select');
+            
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.parentNode.style.transform = 'scale(1.02)';
+                    this.parentNode.style.transition = 'transform 0.2s ease';
+                });
+                
+                input.addEventListener('blur', function() {
+                    this.parentNode.style.transform = 'scale(1)';
+                });
+            });
+        }
+
+        // Initialize all effects
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+            addButtonLoadingStates();
+            addInputEffects();
+        });
+    </script>
+</body>
+</html>
