@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <h1>Result</h1>
+
+        <h2>Elements:</h2>
+<ul>
+    {% for key, value in elements.items %}
+    <li>{{ key }} : {{ value }}</li>
+    {% endfor %}
+</ul>
+
+<h2>Prediction Result: <strong>{{ ans }}</strong></h2>
+{% if ans == 1 %}
+    <p>Building Windows (Float Processed)</p>
+{% elif ans == 2 %}
+    <p>Building Windows (Non-Float Processed)</p>
+{% elif ans == 3 %}
+    <p>Vehicle Windows (Float Processed)</p>
+{% elif ans == 4 %}
+    <p>Vehicle Windows (Non-Float Processed)</p>
+{% elif ans == 5 %}
+    <p>Containers</p>
+{% elif ans == 6 %}
+    <p>Tableware</p>
+{% elif ans == 7 %}
+    <p>Headlamps</p>
+{% else %}
+    <p>Unknown Glass Type</p>
+{% endif %}
+    </div>
+</body>
+</html>

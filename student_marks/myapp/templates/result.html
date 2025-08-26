@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prediction Result</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .result-card {
+      background: #fff;
+      padding: 40px 50px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      text-align: center;
+      animation: fadeIn 0.8s ease-in-out;
+    }
+
+    h2 {
+      margin: 10px 0;
+      color: #333;
+    }
+
+    .percent {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #6c63ff;
+      margin-top: 15px;
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 12px 20px;
+      background: #6c63ff;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: background 0.3s ease;
+    }
+
+    .btn:hover {
+      background: #574b90;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="result-card">
+    <h2>📊 Prediction Result</h2>
+    <div class="percent">{{ result }}%</div>
+    <a href="/" class="btn">🔙 Try Again</a>
+  </div>
+</body>
+</html>

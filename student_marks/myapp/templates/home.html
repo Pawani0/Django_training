@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Score Prediction</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .form-container {
+      background: #fff;
+      padding: 30px 40px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      text-align: center;
+      width: 350px;
+      animation: fadeIn 0.8s ease-in-out;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    label {
+      display: block;
+      text-align: left;
+      margin: 10px 0 5px;
+      font-weight: bold;
+      color: #555;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: border 0.3s ease;
+    }
+
+    input[type="text"]:focus {
+      border-color: #6c63ff;
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #6c63ff;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #574b90;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>📘 Student Score Prediction</h2>
+    <form action="{% url 'result' %}" method="get">
+      <label for="course">No of Courses</label>
+      <input type="text" id="course" name="course" placeholder="Enter number of courses">
+
+      <label for="hours">No of Hours</label>
+      <input type="text" id="hours" name="hours" placeholder="Enter study hours">
+
+      <button type="submit">Predict</button>
+    </form>
+  </div>
+</body>
+</html>
